@@ -8,13 +8,14 @@ from load import load_post_hashtags
 
 
 def main():
-    #Chama extract_data para obter o DataFrame
-    #df = extractor_hashtag()
+    # Initializing ETL process for hashtags table
+    df = extractor_hashtag()
 
-    #df = transform_posts_hashtag(df)
+    df = transform_posts_hashtag(df)
 
-    #load_post_hashtags(df)
+    load_post_hashtags(df)
 
+    # Initializing ETL process for posts metadata table
     df = extractor_post_metada()
 
     df = transform_posts_metadata(df)

@@ -40,47 +40,49 @@ def load_post_metadata(df):
                             f"(SELECT 1 FROM {schema_name}.{table_name} MAIN WHERE AUX.post_id = MAIN.post_id);"
         cursor.execute(insert_main_table)
 
-        # Commit para aplicar as alterações
+        # Commit to apply changes
         conn.commit()
 
-        # Fechar a conexão e o cursor
+        # End connection and cursor
         cursor.close()
         conn.close()
 
-        # Adicionar mensagem de log ao finalizar a inserção
-        logger.info(f'Dados inseridos na tabela {table_name} com sucesso.')
+        # Troubleshooting
+        logger.info(f'Data inserted on {table_name} successfully.')
     except psycopg2.Error as e:
-        logger.error(f"Erro ao tentar carregar a tabela: {e}")
-        logger.error("Detalhes adicionais:")
-        logger.error(f"Query executada: {execute_values}")
-        logger.error(f"Dados a serem inseridos: {df.to_dict(orient='records')}")
+        logger.error(f"Error while loading the table: {e}")
+        logger.error("Additional details:")
+        logger.error(f"Query executed: {execute_values}")
+        logger.error(f"Data to be inserted: {df.to_dict(orient='records')}")
 
 
 def load_post_hashtags(df):
     try:
         table_name = 'gerandoafetospsi.tb_posts_hashtags'
 
-        # Abrir um cursor para executar comandos SQL
+        # Opening cursor
         cursor = conn.cursor()
 
         # Truncate table before loading
         truncate_query = f"TRUNCATE TABLE {table_name};"
         cursor.execute(truncate_query)
 
-        # Iterar sobre as linhas do DataFrame e inserir os dados na tabela
+        # Inserting data
         for index, row in df.iterrows():
             insert_query = f"INSERT INTO {table_name}  VALUES ('{row['post_id']}','{row['hashtags']}');"
             cursor.execute(insert_query)
 
-        # Commit para aplicar as alterações
+        # Commit to aplly changes
         conn.commit()
 
-        # Fechar a conexão e o cursor
+        # End cursor
         cursor.close()
-        conn.close()
 
-        # Adicionar mensagem de log ao finalizar a inserção
-        logger.info(f'Dados inseridos na tabela {table_name} com sucesso.')
+        # Troubleshooting
+        logger.info(f'Data inserted on {table_name} successfully.')
     except psycopg2.Error as e:
-        logger.error(f"Erro ao tentar carregar a tabela: {e}")
+        logger.error(f"Error while loading the table: {e}")
+        logger.error("Additional details:")
+        logger.error(f"Query executed: {insert_query}")
+        logger.error(f"Data to be inserted: {df.to_dict(orient='records')}")
 
