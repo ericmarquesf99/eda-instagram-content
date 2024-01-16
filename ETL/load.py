@@ -7,10 +7,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Connection variables
-user = 'ezjoiktc'
-password = 'V08E4u_lljnKTRq3dMTmH0sGReUP_6NM'
-host = 'tuffi.db.elephantsql.com'
-database = 'ezjoiktc'
+user = ''
+password = ''
+host = ''
+database = ''
 
 # Connecting to PostgreSQL
 connection_string = f'postgresql://{user}:{password}@{host}/{database}'
