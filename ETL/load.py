@@ -19,14 +19,14 @@ conn = psycopg2.connect(connection_string)
 def load_post_metadata(df):
     try:
         schema_name = 'gerandoafetospsi'
-        table_name = 'tb_posts_metadata'
+        table_name = 'tb_posts'
         aux_table_name = 'tb_posts_aux'
 
         # Open cursor
         cursor = conn.cursor()
 
         # Truncate aux table before loading
-        truncate_query = f"TRUNCATE TABLE {aux_table_name};"
+        truncate_query = f"TRUNCATE TABLE {schema_name}.{aux_table_name};"
         cursor.execute(truncate_query)
 
         # Inserting data into aux table
@@ -35,12 +35,11 @@ def load_post_metadata(df):
         execute_values(cursor, f"INSERT INTO {schema_name}.{aux_table_name} ({', '.join(df.columns)}) VALUES %s", values,
                        template=None, page_size=100)
 
-        """
         # Inserting only non-existing records in post metadata main table.
-        insert_main_table = f"INSERT INTO {table_name} SELECT * FROM {aux_table_name} AUX WHERE NOT EXISTS" \
-                            f"(SELECT 1 FROM {table_name} MAIN WHERE AUX.post_id = MAIN.post_id);"
+        insert_main_table = f"INSERT INTO {schema_name}.{table_name} SELECT * FROM {schema_name}.{aux_table_name} AUX WHERE NOT EXISTS" \
+                            f"(SELECT 1 FROM {schema_name}.{table_name} MAIN WHERE AUX.post_id = MAIN.post_id);"
         cursor.execute(insert_main_table)
-        """
+
         # Commit para aplicar as alterações
         conn.commit()
 
