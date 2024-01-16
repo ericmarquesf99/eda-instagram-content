@@ -20,7 +20,7 @@ def extract_post_hashtags(post):
         'hashtags': post.caption_hashtags
     }
 
-def extractor():
+def extractor_post_metada():
     loader = instaloader.Instaloader()
 
     # Extract profile posts metadata
